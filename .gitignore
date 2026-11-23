@@ -1,0 +1,13 @@
+node_modules/
+.env
+data/*.sqlite*
+data/catalog.json
+data/import-report.json
+*.rar
+*.zip
+tmp/
+artifacts/
+playwright-report/
+test-results/
+*.log
+unchatgpt.txt

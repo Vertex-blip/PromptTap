@@ -1,0 +1,10 @@
+.git
+.env
+node_modules
+data
+test
+docs
+artifacts
+*.rar
+*.zip
+*.log
