@@ -4,7 +4,7 @@
 
 <h1 align="center">PromptTap</h1>
 <p align="center">Find the right prompt. Make it yours.</p>
-<p align="center">Қазақша · Русский · English</p>
+<p align="center">Kazakh · Russian · English</p>
 <p align="center">
   <a href="https://t.me/PromptTapBot">Open Telegram bot</a> ·
   <a href="https://vertex-blip.github.io/PromptTap/">Open website</a> ·
