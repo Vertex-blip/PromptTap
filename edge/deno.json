@@ -1,0 +1,11 @@
+{
+  "imports": {
+    "ai": "npm:ai@7.0.179",
+    "@ai-sdk/openai": "npm:@ai-sdk/openai@4.0.122",
+    "grammy": "npm:grammy@1.48.0",
+    "@grammyjs/auto-retry": "npm:@grammyjs/auto-retry@2.0.2",
+    "@grammyjs/runner": "npm:@grammyjs/runner@2.0.3",
+    "minisearch": "npm:minisearch@7.2.0",
+    "zod": "npm:zod@4.6.7"
+  }
+}

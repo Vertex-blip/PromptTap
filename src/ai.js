@@ -6,9 +6,10 @@ export function createAI(config, store) {
   const provider = enabled ? createOpenAI({ apiKey: config.aiKey, baseURL: config.aiBaseUrl }) : null;
   let active = 0;
   async function generate(instructions, payload, maxOutputTokens) {
-    if (!enabled || active >= 4 || !store.consume('ai:daily', config.aiDailyLimit, 86400000)) throw new Error('AI_UNAVAILABLE');
+    if (!enabled || active >= 4) throw new Error('AI_UNAVAILABLE');
     active++;
     try {
+      if (!await store.consume('ai:daily', config.aiDailyLimit, 86400000)) throw new Error('AI_UNAVAILABLE');
       const result = await generateText({
         model: provider.chat(config.aiModel), instructions,
         prompt: JSON.stringify(payload), maxOutputTokens, maxRetries: 1,

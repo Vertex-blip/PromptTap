@@ -49,12 +49,12 @@ export function createApp({ config, service, store }) {
   app.post(['/api/search', '/api/adapt'], async (req, res) => {
     const parsed = requestSchema.safeParse(req.body);
     if (!parsed.success) throw new UserError('Сұранысты тексеріңіз. / Enter a task of 2–2000 characters.');
-    if (!store.allowRequest(req.userId)) throw new UserError('Бір минуттан кейін қайталап көріңіз. / Try again in one minute.', 429);
+    if (!await store.allowRequest(req.userId)) throw new UserError('Бір минуттан кейін қайталап көріңіз. / Try again in one minute.', 429);
     const result = req.path === '/api/search' ? await service.search(parsed.data) : await service.adapt(parsed.data);
     res.json(result);
   });
-  app.get(['/api/prompts/:id', '/api/prompts/:id/download'], (req, res) => {
-    const prompt = service.getPrompt(req.params.id);
+  app.get(['/api/prompts/:id', '/api/prompts/:id/download'], async (req, res) => {
+    const prompt = await service.getPrompt(req.params.id);
     if (!prompt) throw new UserError('Промпт табылмады. / Prompt unavailable.', 404);
     if (req.path.endsWith('/download')) {
       res.set('Content-Disposition', `attachment; filename="PromptTap-${prompt.id}.txt"`);

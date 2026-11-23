@@ -1,16 +1,30 @@
 const words = {
   kk: {
+    examplesLabel: 'Мысалы',
+    telegramEntry: 'Промпттарды іздеу және бейімдеу үшін Telegram-да аш.',
+    openTelegram: 'Telegram-да ашу',
     skip:'Іздеуге өту', searchNav:'Іздеу', savedNav:'Сақталған', connecting:'Қосылуда', library:'Промпт кітапханасы', language:'Тіл', sidebarNote:'Керек ойға — керек промпт.', heroEyebrow:'Ойыңды іске қос', heroLine1:'Дәл сөзің.', heroLine2:'Дайын промпт.', heroDescription:'Не жасағың келетінін жаз. Архивтен табамыз, тапсырмаңа бейімдейміз.', catalogCount:'қолжетімді промпт', artCategory:'Дизайн', artTitle:'Идеядан\nалғашқы нұсқаға.', yourIdea:'Сенің идеяң', queryLabel:'Қандай промпт керек?', queryPlaceholder:'Мысалы, киім брендіне минималистік логотип жасауға промпт...', searchHint:'Тапсырмаңды өз сөзіңмен жаз', findPrompt:'Промпт табу', tryTitle:'Бір идеядан баста', tryHint:'Таңдап көр', resultsTitle:'Саған сәйкес промпттар', adaptHint:'Сұранысыңа дәлдеп шығарайық.', adaptRequest:'Сұранысты бейімдеу', yourCollection:'Сенің таңдауың', savedDescription:'Қайта қолданғың келетін промпттар осы жерде.', copy:'Көшіру', download:'.txt жүктеу', save:'Сақтау', saved:'Сақталды', sources:'Архивтегі дереккөздер', adaptLabel:'Тапсырмаңа бейімдеу', adaptPlaceholder:'Осы промптпен не жасағың келеді?', adapt:'Бейімдеу', ready:'Кітапхана қолжетімді', offline:'Қосылым үзілді', aiMode:'Бейімдеу · ИИ', templateMode:'Бейімдеу · үлгі', searching:'Архивтен іздеп жатырмыз…', adapting:'Промптты бейімдеп жатырмыз…', loading:'Жүктелуде…', noResults:'Дәл сәйкес промпт табылмады. Сұранысыңа бейімделген нұсқаны төменнен қара.', emptySaved:'Әзірге сақталған промпт жоқ. Өзіңе ұнаған промпттың сақтау батырмасын бас.', savedUnavailable:'Кейбір сақталған промпттар қазір қолжетімсіз.', requestError:'Сұранысты орындау мүмкін болмады. Біраздан кейін қайта көр.', networkError:'Серверге қосыла алмадық. Қосылымды тексеріп, қайта көр.', authError:'Mini App-ты Telegram ботындағы батырма арқылы қайта аш.', rateError:'Сұраныс көп болып кетті. Біраздан кейін қайта көр.', validationError:'Тапсырмаңды 2–2000 таңба аралығында жаз.', copied:'Мәтін көшірілді', copyError:'Көшіру мүмкін болмады. Мәтінді белгілеп көшір немесе .txt жүкте.', storageError:'Бұл құрылғыда сақтауға рұқсат жоқ.', open:'Ашу', close:'Жабу', resultCount:'нұсқа', prepared:'Сұранысыңа дайындалған промпт', generatedAI:'ИИ арқылы бейімделді', generatedTemplate:'Үлгімен дайындалды', templateNote:'ИИ қосылған кезде сұранысқа тереңірек бейімдеуге болады.', removeSave:'Сақталғаннан алып тастау', savePrompt:'Промптты сақтау', sourceCount:'дереккөз', all:'Барлығы', design:'Дизайн', code:'Код', writing:'Мәтін', marketing:'Маркетинг', study:'Оқу', productivity:'Өнімділік', security:'Қауіпсіздік', general:'Жалпы', other:'Басқа', searchRetry:'Қайта іздеу', favoritesLocal:'Сақталғандар осы құрылғыда сақталады.', suggestions:[['design','Киім брендіне минималистік логотип жасауға промпт'],['code','Telegram ботын жасауға нақты техникалық тапсырма'],['marketing','Кофеханаға бір апталық Instagram контент-жоспары']]
   },
   ru: {
+    examplesLabel: 'Например',
+    telegramEntry: 'Открой PromptTap в Telegram, чтобы искать и адаптировать промпты.',
+    openTelegram: 'Открыть в Telegram',
     skip:'Перейти к поиску', searchNav:'Поиск', savedNav:'Избранное', connecting:'Подключение', library:'Библиотека промптов', language:'Язык', sidebarNote:'Нужной идее — нужный промпт.', heroEyebrow:'Дай идее ход', heroLine1:'Точные слова.', heroLine2:'Готовый промпт.', heroDescription:'Опиши, что хочешь сделать. Найдём в архиве и адаптируем под твою задачу.', catalogCount:'доступных промптов', artCategory:'Дизайн', artTitle:'От идеи\nк первой версии.', yourIdea:'Твоя идея', queryLabel:'Какой промпт нужен?', queryPlaceholder:'Например, промпт для минималистичного логотипа бренда одежды...', searchHint:'Опиши задачу своими словами', findPrompt:'Найти промпт', tryTitle:'Начни с одной идеи', tryHint:'Попробуй', resultsTitle:'Подходящие промпты', adaptHint:'Подстроим под твою задачу.', adaptRequest:'Адаптировать запрос', yourCollection:'Твоя подборка', savedDescription:'Промпты, к которым захочется вернуться.', copy:'Копировать', download:'Скачать .txt', save:'Сохранить', saved:'Сохранено', sources:'Источники в архиве', adaptLabel:'Адаптировать под задачу', adaptPlaceholder:'Что ты хочешь сделать с этим промптом?', adapt:'Адаптировать', ready:'Библиотека доступна', offline:'Нет соединения', aiMode:'Адаптация · ИИ', templateMode:'Адаптация · шаблон', searching:'Ищем в архиве…', adapting:'Адаптируем промпт…', loading:'Загрузка…', noResults:'Точного совпадения не нашлось. Ниже — версия, подготовленная под твой запрос.', emptySaved:'Здесь пока пусто. Сохрани понравившийся промпт, чтобы вернуться к нему.', savedUnavailable:'Некоторые сохранённые промпты сейчас недоступны.', requestError:'Не удалось выполнить запрос. Попробуй чуть позже.', networkError:'Не удалось подключиться к серверу. Проверь соединение и попробуй ещё раз.', authError:'Открой Mini App заново через кнопку в Telegram-боте.', rateError:'Слишком много запросов. Попробуй чуть позже.', validationError:'Опиши задачу в 2–2000 символах.', copied:'Текст скопирован', copyError:'Не удалось скопировать. Выдели текст вручную или скачай .txt.', storageError:'Хранилище этого устройства недоступно.', open:'Открыть', close:'Закрыть', resultCount:'варианта', prepared:'Промпт под твой запрос', generatedAI:'Адаптировано с ИИ', generatedTemplate:'Подготовлено по шаблону', templateNote:'При подключении ИИ доступна более глубокая адаптация.', removeSave:'Удалить из избранного', savePrompt:'Сохранить промпт', sourceCount:'источников', all:'Все', design:'Дизайн', code:'Код', writing:'Тексты', marketing:'Маркетинг', study:'Учёба', productivity:'Продуктивность', security:'Безопасность', general:'Общее', other:'Другое', searchRetry:'Повторить поиск', favoritesLocal:'Избранное хранится на этом устройстве.', suggestions:[['design','Промпт для минималистичного логотипа бренда одежды'],['code','Техническое задание для разработки Telegram-бота'],['marketing','Контент-план для Instagram кофейни на неделю']]
   },
   en: {
+    examplesLabel: 'Examples',
+    telegramEntry: 'Open PromptTap in Telegram to find and adapt prompts.',
+    openTelegram: 'Open in Telegram',
     skip:'Skip to search', searchNav:'Discover', savedNav:'Saved', connecting:'Connecting', library:'The prompt library', language:'Language', sidebarNote:'The right prompt for your next idea.', heroEyebrow:'Put your idea to work', heroLine1:'Right words.', heroLine2:'Ready prompt.', heroDescription:'Tell us what you want to make. Find a prompt in the archive and tailor it to your task.', catalogCount:'available prompts', artCategory:'Design', artTitle:'From an idea\nto a first draft.', yourIdea:'Your idea', queryLabel:'What would you like to make?', queryPlaceholder:'For example, a prompt for a minimal clothing brand logo...', searchHint:'Describe your task in your own words', findPrompt:'Find a prompt', tryTitle:'Start with an idea', tryHint:'Give it a try', resultsTitle:'Prompts for your task', adaptHint:'Make it fit your exact brief.', adaptRequest:'Adapt my request', yourCollection:'Your collection', savedDescription:'Prompts you will want to come back to.', copy:'Copy text', download:'Download .txt', save:'Save', saved:'Saved', sources:'Sources in the archive', adaptLabel:'Make it your own', adaptPlaceholder:'What would you like to do with this prompt?', adapt:'Adapt prompt', ready:'Library available', offline:'Connection lost', aiMode:'Adaptation · AI', templateMode:'Adaptation · template', searching:'Searching the archive…', adapting:'Adapting your prompt…', loading:'Loading…', noResults:'No close match found. A prompt prepared for your request appears below.', emptySaved:'Your collection starts here. Save a prompt you like to find it again.', savedUnavailable:'Some saved prompts are currently unavailable.', requestError:'We could not complete this request. Please try again shortly.', networkError:'Could not connect to the server. Check your connection and try again.', authError:'Reopen the Mini App using the button in the Telegram bot.', rateError:'Too many requests. Please try again shortly.', validationError:'Describe your task using 2–2000 characters.', copied:'Text copied', copyError:'Could not copy. Select the text manually or download the .txt file.', storageError:'Storage is unavailable on this device.', open:'Open prompt', close:'Close', resultCount:'results', prepared:'A prompt for your request', generatedAI:'Adapted with AI', generatedTemplate:'Prepared from a template', templateNote:'Connect an AI provider for more detailed adaptation.', removeSave:'Remove from saved', savePrompt:'Save prompt', sourceCount:'sources', all:'All', design:'Design', code:'Code', writing:'Writing', marketing:'Marketing', study:'Learning', productivity:'Productivity', security:'Security', general:'General', other:'Other', searchRetry:'Try again', favoritesLocal:'Saved prompts stay on this device.', suggestions:[['design','A prompt for a minimal clothing brand logo'],['code','A clear technical brief for a Telegram bot'],['marketing','A week of Instagram content for a coffee shop']]
   }
 };
 
 const $ = (selector) => document.querySelector(selector);
+const localPreview = ['localhost', '127.0.0.1', '[::1]'].includes(window.location.hostname);
+const publicConfig = window.PROMPTTAP_CONFIG || {};
+const apiBaseUrl = localPreview ? '' : String(publicConfig.apiBaseUrl || '').replace(/\/$/, '');
+const botUrl = new URL(publicConfig.botUrl || 'https://t.me/PromptTapBot');
+botUrl.searchParams.set('start', 'app');
 const supportedLanguages = ['kk', 'ru', 'en'];
 function readStored(key, fallback) {
   try { return JSON.parse(localStorage.getItem(key)) ?? fallback; }
@@ -21,6 +35,7 @@ const state = {
   language: supportedLanguages.includes(storedLanguage) ? storedLanguage : 'kk',
   favorites: new Set(), favoritesKey: null,
   page:'search', category:'all', meta:null, results:[], savedResults:[], query:'', prompt:null,
+  requiresTelegram: !localPreview && !window.Telegram?.WebApp?.initData,
   searching:false, searchSequence:0, dialogSequence:0, savedSequence:0, savedLimit:24, adaptation:null, dialogAdaptation:null
 };
 const t = key => words[state.language][key] || words.en[key] || key;
@@ -62,12 +77,19 @@ async function request(path, options = {}, raw = false) {
   const initData = window.Telegram?.WebApp?.initData;
   if (initData) headers.set('X-Telegram-Init-Data', initData);
   let response;
-  try { response = await fetch(path, { ...options, headers, signal: options.signal || AbortSignal.timeout(65000) }); }
+  try { response = await fetch(`${apiBaseUrl}${path}`, { ...options, headers, signal: options.signal || AbortSignal.timeout(65000) }); }
   catch (error) {
     if (error.name === 'AbortError') throw error;
     throw new Error(t('networkError'));
   }
   if (!response.ok) {
+    if (response.status === 401 || response.status === 403) {
+      state.requiresTelegram = true;
+      renderTelegramEntry();
+      const error = new Error(t('telegramEntry'));
+      error.code = 'TELEGRAM_REQUIRED';
+      throw error;
+    }
     if (response.status === 422) {
       const body = await response.json().catch(() => ({}));
       if (typeof body.error === 'string') throw new Error(body.error);
@@ -76,6 +98,29 @@ async function request(path, options = {}, raw = false) {
     throw new Error(t(errorKey));
   }
   return raw ? response : response.json();
+}
+
+function renderTelegramEntry() {
+  const required = state.requiresTelegram;
+  $('#telegram-entry').hidden = !required;
+  $('#search-form').hidden = required;
+  $('.category-section').hidden = required;
+  $('#suggestions').hidden = required || Boolean(state.query);
+  $('#telegram-open').href = botUrl.href;
+  if (required) {
+    $('#results-section').hidden = true;
+    $('#saved-page').hidden = true;
+    $('#search-page').hidden = false;
+    $('#prompt-dialog').close();
+  }
+}
+
+function openTelegram() {
+  if (window.Telegram?.WebApp?.openTelegramLink) {
+    window.Telegram.WebApp.openTelegramLink(botUrl.href);
+  } else {
+    window.location.assign(botUrl.href);
+  }
 }
 
 function renderCategories() {
@@ -100,9 +145,7 @@ function renderSuggestions() {
   $('#suggestion-grid').replaceChildren(...t('suggestions').map(([category, query], index) => {
     const button = node('button', 'suggestion');
     button.type = 'button';
-    const top = node('span', 'suggestion-top');
-    top.append(node('span', '', categoryName(category)), node('span', '', '↗'));
-    button.append(top, node('p', '', labels[state.language][index]));
+    button.append(node('p', '', labels[state.language][index]));
     button.title = query;
     button.addEventListener('click', () => {
       $('#query').value = query;
@@ -224,6 +267,7 @@ function renderAdaptation(target, adaptation) {
 }
 
 async function search() {
+  if (state.requiresTelegram) { openTelegram(); return; }
   const query = $('#query').value.trim();
   if (query.length < 2 || query.length > 2000) { toast(t('validationError')); $('#query').focus(); return; }
   const sequence = ++state.searchSequence;
@@ -259,6 +303,7 @@ async function search() {
     }
   } catch (error) {
     if (sequence !== state.searchSequence) return;
+    if (error.code === 'TELEGRAM_REQUIRED') return;
     $('#search-status').replaceChildren(node('div', 'notice', error.message));
     $('#adapt-search-row').hidden = true;
   } finally {
@@ -294,12 +339,14 @@ async function openPrompt(id) {
     updateFavoriteButtons();
   } catch (error) {
     if (sequence !== state.dialogSequence) return;
+    if (error.code === 'TELEGRAM_REQUIRED') return;
     $('#dialog-title').textContent = t('requestError');
     $('#dialog-status').replaceChildren(node('div', 'notice', error.message));
   }
 }
 
 async function adapt(query, promptId, inDialog) {
+  if (state.requiresTelegram) { openTelegram(); return; }
   if (query.length < 2 || query.length > 2000) { toast(t('validationError')); return; }
   const statusTarget = inDialog ? '#dialog-status' : '#search-status';
   const outputTarget = inDialog ? '#dialog-adaptation' : '#adaptation-panel';
@@ -317,11 +364,13 @@ async function adapt(query, promptId, inDialog) {
     $(outputTarget).scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block:'nearest'});
   } catch (error) {
     if (sequence !== (inDialog ? state.dialogSequence : state.searchSequence)) return;
+    if (error.code === 'TELEGRAM_REQUIRED') return;
     $(statusTarget).replaceChildren(node('div', 'notice', error.message));
   } finally { button.disabled = false; }
 }
 
 async function showPage(page) {
+  if (state.requiresTelegram) { renderTelegramEntry(); return; }
   const sequence = ++state.savedSequence;
   state.page = page;
   $('#search-page').hidden = page !== 'search';
@@ -370,6 +419,7 @@ function translatePage() {
   renderAdaptation('#adaptation-panel', state.adaptation);
   renderAdaptation('#dialog-adaptation', state.dialogAdaptation);
   updateFavoriteButtons();
+  renderTelegramEntry();
   if (state.prompt) $('#dialog-category').textContent = categoryName(state.prompt.category);
   if (state.results.length) $('#results-count').textContent = `${state.results.length} ${t('resultCount')}`;
   if (state.page === 'saved' && !state.favorites.size && state.favoritesKey) showStatus('#saved-status', 'emptySaved');
@@ -429,6 +479,7 @@ try {
 
 request('/api/meta').then(meta => {
   state.meta = meta;
+  state.requiresTelegram = Boolean(meta.requiresTelegram);
   if (typeof meta.userId === 'string' && /^(?:\d+|preview)$/.test(meta.userId)) {
     state.favoritesKey = `prompttap.saved.${meta.userId}`;
     const saved = readStored(state.favoritesKey, []);
@@ -438,6 +489,7 @@ request('/api/meta').then(meta => {
   translatePage();
   if (state.page === 'saved') showPage('saved');
 }).catch(error => {
+  if (error.code === 'TELEGRAM_REQUIRED') return;
   $('#connection-label').textContent = t('offline');
   $('#global-notice').textContent = error.message;
   $('#global-notice').hidden = false;

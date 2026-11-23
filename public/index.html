@@ -3,27 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="referrer" content="no-referrer" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://telegram.org; style-src 'self'; img-src 'self' data:; connect-src 'self' https://jxfifiyzwcssledekqvk.supabase.co; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-src https://telegram.org https://web.telegram.org" />
     <meta name="theme-color" content="#101419" />
     <meta name="description" content="PromptTap — find a prompt, make it yours." />
     <title>PromptTap</title>
-    <link rel="icon" href="/brand-icon.png" type="image/png" />
-    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" href="./brand-icon.png" type="image/png" />
+    <link rel="stylesheet" href="./styles.css" />
     <script src="https://telegram.org/js/telegram-web-app.js" defer></script>
-    <script src="/app.js" defer></script>
+    <script src="./config.js" defer></script>
+    <script src="./app.js" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#query" data-i18n="skip">Іздеуге өту</a>
     <header class="topbar">
-      <a class="brand" href="#search" aria-label="PromptTap"><img class="brand-image" src="/brand-icon.png" alt="" width="40" height="40" /><span>Prompt<span class="brand-light">Tap</span></span></a>
+      <a class="brand" href="#search" aria-label="PromptTap"><img class="brand-image" src="./brand-icon.png" alt="" width="40" height="40" /><span>Prompt<span class="brand-light">Tap</span></span></a>
       <nav class="main-nav" aria-label="Navigation">
         <button class="nav-button active" data-page="search" aria-current="page"><span data-i18n="searchNav">Іздеу</span></button>
-        <button class="nav-button" data-page="saved"><span class="nav-icon bookmark-icon" aria-hidden="true"></span><span data-i18n="savedNav">Сақталған</span><span class="saved-count">0</span></button>
+        <button class="nav-button" data-page="saved"><span data-i18n="savedNav">Сақталған</span><span class="saved-count">0</span></button>
       </nav>
       <label class="language-control"><span class="sr-only" data-i18n="language">Тіл</span><select id="language" aria-label="Language"><option value="kk">ҚАЗ</option><option value="ru">РУС</option><option value="en">ENG</option></select></label>
     </header>
 
     <div class="workspace">
-      <div class="ambient-art" aria-hidden="true"><img src="/brand-icon.png" alt="" width="600" height="600" /></div>
+      <div class="ambient-art" aria-hidden="true"><img src="./brand-icon.png" alt="" width="600" height="600" /></div>
       <main>
         <div id="global-notice" class="notice" role="status" hidden></div>
         <section id="search-page">
@@ -34,23 +37,31 @@
             </div>
           </div>
 
+          <section id="telegram-entry" class="telegram-entry" hidden>
+            <p data-i18n="telegramEntry">Промпттарды іздеу және бейімдеу үшін Telegram-да аш.</p>
+            <a id="telegram-open" class="button button-lime" href="https://t.me/PromptTapBot?start=app" data-i18n="openTelegram">Telegram-да ашу</a>
+          </section>
+
           <form id="search-form" class="search-panel">
             <label for="query" class="sr-only" data-i18n="queryLabel">Қандай промпт керек?</label>
             <textarea id="query" name="query" rows="2" maxlength="2000" required data-placeholder="queryPlaceholder" placeholder="Мысалы, киім брендіне минималистік логотип жасауға промпт..." spellcheck="false"></textarea>
-            <div class="search-panel-bottom"><span class="input-hint">Ctrl + Enter</span><button id="search-submit" class="button button-lime" type="submit"><span data-i18n="findPrompt">Промпт табу</span><span class="button-arrow" aria-hidden="true">↗</span></button></div>
+            <div class="search-panel-bottom"><span class="input-hint">Ctrl + Enter</span><button id="search-submit" class="button button-lime" type="submit"><span data-i18n="findPrompt">Промпт табу</span></button></div>
           </form>
 
           <div class="category-section"><div id="category-filters" class="category-filters" role="group" aria-label="Categories"></div></div>
-          <section id="suggestions" class="suggestions"><div id="suggestion-grid" class="suggestion-grid"></div></section>
-          <section id="results-section" hidden><div class="section-heading"><div><h2 id="results-title" data-i18n="resultsTitle">Саған сәйкес промпттар</h2><p id="results-subtitle"></p></div><span id="results-count" class="result-count"></span></div><div id="search-status" role="status" aria-live="polite"></div><div id="results-grid" class="result-grid"></div><div id="adaptation-panel" hidden></div><div id="adapt-search-row" class="adapt-search-row" hidden><p data-i18n="adaptHint">Сұранысыңа дәлдеп шығарайық.</p><button id="adapt-search" class="button button-outline" type="button"><span data-i18n="adaptRequest">Сұранысты бейімдеу</span><span aria-hidden="true">↗</span></button></div></section>
+          <section id="suggestions" class="suggestions" aria-labelledby="examples-label">
+            <span id="examples-label" class="examples-label" data-i18n="examplesLabel">Мысалы</span>
+            <div id="suggestion-grid" class="suggestion-grid"></div>
+          </section>
+          <section id="results-section" hidden><div class="section-heading"><div><h2 id="results-title" data-i18n="resultsTitle">Саған сәйкес промпттар</h2><p id="results-subtitle"></p></div><span id="results-count" class="result-count"></span></div><div id="search-status" role="status" aria-live="polite"></div><div id="results-grid" class="result-grid"></div><div id="adaptation-panel" hidden></div><div id="adapt-search-row" class="adapt-search-row" hidden><p data-i18n="adaptHint">Сұранысыңа дәлдеп шығарайық.</p><button id="adapt-search" class="button button-outline" type="button"><span data-i18n="adaptRequest">Сұранысты бейімдеу</span></button></div></section>
         </section>
 
         <section id="saved-page" hidden><div class="saved-heading"><h1 data-i18n="savedNav">Сақталған</h1><p data-i18n="savedDescription">Қайта қолданғың келетін промпттар осы жерде.</p></div><div id="saved-status" role="status" aria-live="polite"></div><div id="saved-grid" class="result-grid"></div><div id="saved-more" class="saved-more" hidden></div></section>
       </main>
-      <footer class="page-footer"><div class="catalog-stat"><strong id="catalog-count">—</strong><span data-i18n="catalogCount">қолжетімді промпт</span><span id="connection-label" class="sr-only" data-i18n="connecting">Қосылуда</span></div><span id="adapt-mode"></span></footer>
+      <footer class="page-footer"><div class="catalog-stat"><strong id="catalog-count">—</strong><span data-i18n="catalogCount">қолжетімді промпт</span><span id="connection-label" class="sr-only" data-i18n="connecting">Қосылуда</span></div><span id="adapt-mode" hidden></span></footer>
     </div>
 
-    <dialog id="prompt-dialog" aria-labelledby="dialog-title"><div class="dialog-header"><div><span id="dialog-category" class="eyebrow"></span><h2 id="dialog-title"></h2></div><button id="dialog-close" class="icon-button" type="button" aria-label="Close">×</button></div><div class="dialog-actions"><button id="dialog-copy" class="button button-dark" type="button" data-i18n="copy">Көшіру</button><button id="dialog-download" class="button button-outline" type="button" data-i18n="download">.txt жүктеу</button><button id="dialog-save" class="button button-outline" type="button" data-i18n="save">Сақтау</button></div><pre id="dialog-content" tabindex="0"></pre><details class="source-details"><summary data-i18n="sources">Архивтегі дереккөздер</summary><ul id="dialog-sources"></ul></details><form id="adapt-form" class="adapt-form"><label for="adapt-query" data-i18n="adaptLabel">Тапсырмаңа бейімдеу</label><textarea id="adapt-query" rows="2" maxlength="2000" required data-placeholder="adaptPlaceholder" placeholder="Осы промптпен не жасағың келеді?"></textarea><button id="dialog-adapt" class="button button-lime" type="submit"><span data-i18n="adapt">Бейімдеу</span><span aria-hidden="true">↗</span></button></form><div id="dialog-status" role="status" aria-live="polite"></div><div id="dialog-adaptation" hidden></div></dialog>
+    <dialog id="prompt-dialog" aria-labelledby="dialog-title"><div class="dialog-header"><div><span id="dialog-category" class="eyebrow"></span><h2 id="dialog-title"></h2></div><button id="dialog-close" class="icon-button" type="button" aria-label="Close">×</button></div><div class="dialog-actions"><button id="dialog-copy" class="button button-dark" type="button" data-i18n="copy">Көшіру</button><button id="dialog-download" class="button button-outline" type="button" data-i18n="download">.txt жүктеу</button><button id="dialog-save" class="button button-outline" type="button" data-i18n="save">Сақтау</button></div><pre id="dialog-content" tabindex="0"></pre><details class="source-details"><summary data-i18n="sources">Архивтегі дереккөздер</summary><ul id="dialog-sources"></ul></details><form id="adapt-form" class="adapt-form"><label for="adapt-query" data-i18n="adaptLabel">Тапсырмаңа бейімдеу</label><textarea id="adapt-query" rows="2" maxlength="2000" required data-placeholder="adaptPlaceholder" placeholder="Осы промптпен не жасағың келеді?"></textarea><button id="dialog-adapt" class="button button-lime" type="submit"><span data-i18n="adapt">Бейімдеу</span></button></form><div id="dialog-status" role="status" aria-live="polite"></div><div id="dialog-adaptation" hidden></div></dialog>
     <div id="toast" role="status" aria-live="polite" hidden></div>
   </body>
 </html>

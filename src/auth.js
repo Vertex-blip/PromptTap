@@ -1,4 +1,5 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
+import { Buffer } from 'node:buffer';
 
 export function verifyTelegramData(raw, token, now = Date.now()) {
   if (!raw || !token || raw.length > 16384) return null;

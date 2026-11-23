@@ -36,6 +36,15 @@ async function fixture(overrides = {}) {
     consume: () => true,
     ...overrides.store,
   };
+  if (overrides.asyncStore) {
+    const synchronousStore = { ...store };
+    for (const [name, method] of Object.entries(synchronousStore)) {
+      store[name] = async (...args) => {
+        await new Promise(resolve => setTimeout(resolve, 2));
+        return method.apply(synchronousStore, args);
+      };
+    }
+  }
   const service = {
     search: async () => ({ results: [{ ...prompt, description: 'Design & branding', score: 1, sourceCount: 1 }] }),
     getPrompt: async (id) => id === prompt.id ? prompt : null,
@@ -197,4 +206,45 @@ test('slow work preserves one user’s order while other users continue', async 
   } finally { gate.resolve(); }
   await Promise.all([slow, next]);
   assert.deepEqual(requests, ['slow', 'next']);
+});
+
+test('asynchronous store loads language, persists search IDs and preserves callback ownership', async () => {
+  const app = await fixture({ asyncStore: true });
+  await app.store.setUser('1', { language: 'ru' });
+  await app.message('/start');
+  assert.match(app.calls.at(-1).payload.text, /Для какой задачи/);
+  await app.message('logo');
+  assert.equal(app.calls.at(-1).payload.reply_markup.inline_keyboard[0][0].callback_data, 'pick:1:0');
+  await app.callback('favorite:1:0');
+  assert.match(app.calls.at(-1).payload.text, /Сохранено/);
+  await app.message('/saved');
+  assert.equal(app.calls.at(-1).payload.reply_markup.inline_keyboard[0][0].callback_data, 'pick:2:0');
+  await app.callback('favorite:2:0');
+  assert.match(app.calls.at(-1).payload.text, /Убрано/);
+  await app.callback('adapt:1:0', 2);
+  assert.equal(app.calls.at(-1).payload.show_alert, true);
+  assert.equal(app.adapted.length, 0);
+  await app.callback('lang:en');
+  assert.equal(app.calls.at(-1).payload.text, 'English selected.');
+  await app.callback('adapt:1:0');
+  assert.equal(app.adapted[0].language, 'en');
+});
+
+test('asynchronous false rate limits block work instead of being treated as truthy promises', async () => {
+  let requests = 0;
+  const app = await fixture({
+    asyncStore: true,
+    store: { allowRequest: () => false },
+    service: { search: async () => { requests++; } },
+  });
+  await app.store.setUser('1', { language: 'en' });
+  await app.message('logo');
+  assert.equal(requests, 0);
+  assert.match(app.calls.at(-1).payload.text, /Too many requests/);
+
+  const interactionLimited = await fixture({ asyncStore: true, store: { consume: () => false } });
+  await interactionLimited.message('/start');
+  assert.equal(interactionLimited.calls.length, 0);
+  await interactionLimited.callback('pick:1:0');
+  assert.equal(interactionLimited.calls.at(-1).method, 'answerCallbackQuery');
 });

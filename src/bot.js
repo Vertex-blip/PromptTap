@@ -1,4 +1,5 @@
 import { Bot, InlineKeyboard, InputFile } from 'grammy';
+import { Buffer } from 'node:buffer';
 import { autoRetry } from '@grammyjs/auto-retry';
 import { sequentialize } from '@grammyjs/runner';
 
@@ -29,7 +30,7 @@ const messages = {
     error: 'Сұранысты аяқтай алмадым. Біраздан соң қайта көр.',
     ai: 'Сұранысыңа бейімделді',
     template: 'Үлгімен дайындалды',
-    templateNote: 'ИИ бейімдеуі әзірге қосылмаған. Бұл нұсқа тапсырмаң жазылған дайын үлгімен құрастырылды.',
+    templateNote: 'ИИ бейімдеуі қазір қолжетімсіз. Бұл нұсқа тапсырмаңа арналған үлгімен құрастырылды.',
     previous: '← Алдыңғы',
     next: 'Келесі →',
     noText: 'Промпт іздеу үшін тапсырмаңды мәтінмен жібер.',
@@ -60,7 +61,7 @@ const messages = {
     error: 'Не удалось завершить запрос. Попробуй немного позже.',
     ai: 'Адаптировано под твой запрос',
     template: 'Подготовлено по шаблону',
-    templateNote: 'ИИ-адаптация пока не подключена. Этот вариант собран из готового шаблона с твоей задачей.',
+    templateNote: 'ИИ-адаптация сейчас недоступна. Этот вариант собран из шаблона под твою задачу.',
     previous: '← Назад',
     next: 'Далее →',
     noText: 'Отправь задачу текстом, чтобы найти промпт.',
@@ -91,7 +92,7 @@ const messages = {
     error: 'The request could not be completed. Please try again shortly.',
     ai: 'Adapted for your request',
     template: 'Prepared from a template',
-    templateNote: 'AI adaptation is not connected yet. This version uses a prepared template containing your task.',
+    templateNote: 'AI adaptation is currently unavailable. This version uses a template for your task.',
     previous: '← Previous',
     next: 'Next →',
     noText: 'Describe your task in a text message to find a prompt.',
@@ -124,11 +125,12 @@ function compact(value, length) {
 export function createBot({ token, miniAppUrl, service, store }) {
   const bot = new Bot(token);
   const appUrl = validMiniAppUrl(miniAppUrl);
+  const requestUsers = new WeakMap();
   bot.api.config.use(autoRetry({ maxRetryAttempts: 2, maxDelaySeconds: 20 }));
 
   const userId = (ctx) => String(ctx.from.id);
   const language = (ctx) => {
-    const selected = store.getUser(userId(ctx)).language;
+    const selected = requestUsers.get(ctx)?.language;
     return Object.hasOwn(messages, selected) ? selected : 'kk';
   };
   const words = (ctx) => messages[language(ctx)];
@@ -184,12 +186,12 @@ export function createBot({ token, miniAppUrl, service, store }) {
     const query = rawQuery.trim();
     if (!query) return ctx.reply(text.ask);
     if (query.length > 2000) return ctx.reply(text.tooLong);
-    if (!store.allowRequest(userId(ctx))) return ctx.reply(text.limited);
-    store.setUser(userId(ctx), { lastQuery: query });
+    if (!await store.allowRequest(userId(ctx))) return ctx.reply(text.limited);
+    await store.setUser(userId(ctx), { lastQuery: query });
     await ctx.replyWithChatAction('typing');
     const response = await service.search({ query, language: language(ctx) });
     const results = response.results.slice(0, 3);
-    const searchId = store.saveSearch(userId(ctx), query, results);
+    const searchId = await store.saveSearch(userId(ctx), query, results);
     if (results.length) {
       const body = results.map((result, index) => `${index + 1}. <b>${escapeHtml(compact(result.title, 150))}</b>\n${escapeHtml(compact(result.description, 240))}`).join('\n\n');
       const keyboard = new InlineKeyboard();
@@ -206,12 +208,12 @@ export function createBot({ token, miniAppUrl, service, store }) {
 
   async function saved(ctx, offset = 0) {
     const text = words(ctx);
-    const ids = store.listFavorites(userId(ctx));
+    const ids = await store.listFavorites(userId(ctx));
     const prompts = (await Promise.all(ids.map((id) => service.getPrompt(id)))).filter(Boolean);
     if (!prompts.length) return ctx.reply(text.emptySaved);
     const start = Math.min(offset, Math.floor((prompts.length - 1) / 8) * 8);
     const page = prompts.slice(start, start + 8);
-    const searchId = store.saveSearch(userId(ctx), '', page.map((prompt) => ({ id: prompt.id, title: prompt.title })));
+    const searchId = await store.saveSearch(userId(ctx), '', page.map((prompt) => ({ id: prompt.id, title: prompt.title })));
     const keyboard = new InlineKeyboard();
     page.forEach((prompt, index) => keyboard.text(compact(prompt.title, 45), `pick:${searchId}:${index}`).row());
     if (start > 0) keyboard.text(text.previous, `saved:${start - 8}`);
@@ -226,9 +228,10 @@ export function createBot({ token, miniAppUrl, service, store }) {
   bot.use(async (ctx, next) => {
     if (!ctx.from || ctx.from.is_bot) return;
     try {
-      if (!store.consume(`interaction:${userId(ctx)}`, 40, 60000)) {
+      if (!await store.consume(`interaction:${userId(ctx)}`, 40, 60000)) {
+        requestUsers.set(ctx, await store.getUser(userId(ctx)));
         if (ctx.callbackQuery) return await ctx.answerCallbackQuery({ text: words(ctx).limited });
-        if (store.consume(`interaction-notice:${userId(ctx)}`, 1, 60000)) await ctx.reply(words(ctx).limited);
+        if (await store.consume(`interaction-notice:${userId(ctx)}`, 1, 60000)) await ctx.reply(words(ctx).limited);
         return;
       }
       await next();
@@ -238,6 +241,10 @@ export function createBot({ token, miniAppUrl, service, store }) {
     }
   });
   bot.use(sequentialize((ctx) => ctx.from ? String(ctx.from.id) : undefined));
+  bot.use(async (ctx, next) => {
+    requestUsers.set(ctx, await store.getUser(userId(ctx)));
+    await next();
+  });
 
   bot.command('start', async (ctx) => {
     const text = words(ctx);
@@ -253,7 +260,8 @@ export function createBot({ token, miniAppUrl, service, store }) {
     await chooseLanguage(ctx);
   });
   bot.callbackQuery(/^lang:(kk|ru|en)$/, async (ctx) => {
-    store.setUser(userId(ctx), { language: ctx.match[1] });
+    await store.setUser(userId(ctx), { language: ctx.match[1] });
+    requestUsers.set(ctx, { ...requestUsers.get(ctx), language: ctx.match[1] });
     await ctx.answerCallbackQuery({ text: words(ctx).languageSet });
     await ctx.reply(words(ctx).languageSet, { reply_markup: homeKeyboard(ctx) });
   });
@@ -264,29 +272,29 @@ export function createBot({ token, miniAppUrl, service, store }) {
   bot.callbackQuery(/^(pick|adapt|favorite):([\w-]{1,32}):(\d{1,2})$/, async (ctx) => {
     const [, action, searchId, rawIndex] = ctx.match;
     const text = words(ctx);
-    const savedSearch = store.getSearch(searchId, userId(ctx));
+    const savedSearch = await store.getSearch(searchId, userId(ctx));
     const index = Number(rawIndex);
     const result = savedSearch?.results[index];
     if (!result) return ctx.answerCallbackQuery({ text: text.expired, show_alert: true });
     const prompt = await service.getPrompt(result.id);
     if (!prompt) return ctx.answerCallbackQuery({ text: text.missing, show_alert: true });
     if (action === 'favorite') {
-      const isSaved = store.toggleFavorite(userId(ctx), prompt.id);
+      const isSaved = await store.toggleFavorite(userId(ctx), prompt.id);
       return ctx.answerCallbackQuery({ text: isSaved ? text.stored : text.removed });
     }
     await ctx.answerCallbackQuery();
     if (action === 'pick') return sendPrompt(ctx, prompt, searchId, index, Boolean(savedSearch.query));
     if (!savedSearch.query) return ctx.reply(text.ask);
-    if (!store.allowRequest(userId(ctx))) return ctx.reply(text.limited);
+    if (!await store.allowRequest(userId(ctx))) return ctx.reply(text.limited);
     await ctx.replyWithChatAction('typing');
     const adaptation = await service.adapt({ query: savedSearch.query, promptId: prompt.id, language: language(ctx) });
     await sendAdaptation(ctx, adaptation);
   });
   bot.callbackQuery(/^make:([\w-]{1,32})$/, async (ctx) => {
-    const savedSearch = store.getSearch(ctx.match[1], userId(ctx));
+    const savedSearch = await store.getSearch(ctx.match[1], userId(ctx));
     if (!savedSearch?.query) return ctx.answerCallbackQuery({ text: words(ctx).expired, show_alert: true });
     await ctx.answerCallbackQuery();
-    if (!store.allowRequest(userId(ctx))) return ctx.reply(words(ctx).limited);
+    if (!await store.allowRequest(userId(ctx))) return ctx.reply(words(ctx).limited);
     await ctx.replyWithChatAction('typing');
     await sendAdaptation(ctx, await service.adapt({ query: savedSearch.query, language: language(ctx) }));
   });

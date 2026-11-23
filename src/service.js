@@ -35,12 +35,12 @@ export function validateTask(query) {
   return query.trim();
 }
 
-export function createService({ catalog, ai, config }) {
+export function createService({ catalog, ai, config, loadPrompt, catalogMetadata }) {
   const searchIndex = new CatalogSearch(catalog);
   const cache = new Map();
   const pending = new Map();
   const localized = language => instructions[language] || instructions.kk;
-  const getPrompt = id => searchIndex.byId.get(id) || null;
+  const getPrompt = id => loadPrompt ? loadPrompt(id) : searchIndex.byId.get(id) || null;
   const service = {
     getPrompt,
     meta() {
@@ -48,12 +48,13 @@ export function createService({ catalog, ai, config }) {
         total: searchIndex.records.length, archiveTotal: catalog.length,
         reviewCount: catalog.filter(record => record.reviewRequired).length,
         categories: categories.map(id => ({ id, count: searchIndex.records.filter(record => record.category === id).length })),
+        ...catalogMetadata,
         aiConfigured: ai.enabled, botConfigured: Boolean(config.token),
       };
     },
     async adapt({ query, promptId, language = 'kk' }) {
       query = validateTask(query);
-      const source = promptId ? getPrompt(promptId) : null;
+      const source = promptId ? await getPrompt(promptId) : null;
       if (promptId && !source) throw new UserError('Промпт табылмады. / Prompt unavailable.', 404);
       const key = JSON.stringify([query, promptId, language]);
       if (cache.has(key)) return cache.get(key);
